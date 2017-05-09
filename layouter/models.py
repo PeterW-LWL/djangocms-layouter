@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from cms.models.pluginmodel import CMSPlugin
 from django.utils.encoding import python_2_unicode_compatible
+from filer.fields.image import FilerImageField
 
 
 @python_2_unicode_compatible
@@ -62,6 +63,8 @@ class ContainerPlugin(CMSPlugin):
 
     margin = models.IntegerField(choices=MARGIN_TYPES, null=False, blank=False, default=MARGIN_TYPES[0][0],
                                  help_text=_('How much margin is needed on the left and right side?'))
+    background_image = FilerImageField(verbose_name=_('Background image'), null=True, blank=True)
+    background_image_parallax = models.BooleanField(_('Parallax Effect'), null=True, blank=True, default=False)
 
     css_classes = models.CharField(max_length=512, blank=True, null=True)
 
