@@ -63,6 +63,10 @@ class ContainerPlugin(CMSPlugin):
     margin = models.IntegerField(choices=MARGIN_TYPES, null=False, blank=False, default=MARGIN_TYPES[0][0],
                                  help_text=_('How much margin is needed on the left and right side?'))
 
+    disable_on_mobile = models.BooleanField(_('Disable on mobile'), null=False, blank=False, default=False)
+    disable_on_tablet = models.BooleanField(_('Disable on tablet'), null=False, blank=False, default=False)
+    disable_on_desktop = models.BooleanField(_('Disable on desktop'), null=False, blank=False, default=False)
+
     css_classes = models.CharField(max_length=512, blank=True, null=True)
 
     @property
