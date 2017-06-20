@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from cms.models.pluginmodel import CMSPlugin
 from django.utils.encoding import python_2_unicode_compatible
+from easy_thumbnails.files import get_thumbnailer
 from filer.fields.image import FilerImageField
 
 
@@ -64,13 +65,38 @@ class ContainerPlugin(CMSPlugin):
     margin = models.IntegerField(choices=MARGIN_TYPES, null=False, blank=False, default=MARGIN_TYPES[0][0],
                                  help_text=_('How much margin is needed on the left and right side?'))
     background_image = FilerImageField(verbose_name=_('Background image'), null=True, blank=True)
-    background_image_parallax = models.BooleanField(_('Parallax Effect'), null=True, blank=True, default=False)
+    background_image_parallax = models.BooleanField(_('Parallax Effect'), default=False)
+
+    background_image_width = models.IntegerField(_('Background image width'), null=True, blank=True, default=1920)
+    background_image_height = models.IntegerField(_('Background image width'), null=True, blank=True, default=1080,
+                                                  help_text=_('It is recommended to limit the size of the background '
+                                                              'image to a reasonable number in order to reduce page '
+                                                              'loading times.'))
 
     css_classes = models.CharField(max_length=512, blank=True, null=True)
 
     @property
     def max_children(self):
         return len(self.TYPE_COLUMNS[self.container_type])
+
+    def get_resized_background_image_url(self):
+        """
+        :return: The url to the image which is thumbnailed to the specified size via easy-thumbnails
+        """
+        if self.background_image is None:
+            return ''
+
+        thumbnail_options = {
+            'crop': False,
+            'size': (self.background_image_width, self.background_image_height)
+        }
+        try:
+            thumbnailer = get_thumbnailer(self.background_image)
+            image = thumbnailer.get_thumbnail(thumbnail_options)
+        except:
+            return ''
+        else:
+            return image.url
 
     def __str__(self):
         name = self.CONTAINER_TYPES[self.container_type][1]

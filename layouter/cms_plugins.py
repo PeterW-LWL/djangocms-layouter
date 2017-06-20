@@ -20,7 +20,10 @@ class ContainerCMSPlugin(CMSPluginBase):
             'fields': ('container_type', 'margin')
         }),
         (_('Background'), {
-            'fields': ('background_image','background_image_parallax')
+            'classes': ('collapse',),
+            'fields': (
+                'background_image', 'background_image_parallax', 'background_image_width', 'background_image_height'
+            )
         }),
         (_('Advanced'), {
             'classes': ('collapse',),

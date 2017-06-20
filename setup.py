@@ -28,6 +28,7 @@ CLASSIFIERS = [
 REQUIREMENTS = [
     'django>=1.8.14',
     'django-cms>=3.4.0',
+    'easy-thumbnails>=2.1 ',
 ]
 
 setup(
