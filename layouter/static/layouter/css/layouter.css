@@ -70,6 +70,10 @@
 .full-width:before {
   content: "\e906";
 }
+.layouter-deviceIcon {
+  margin-right: 5px;
+  font-size: 1.1em !important;
+}
 @media only screen and (max-width: 480px) {
   .layouterRow-disableMobile { display: none; }
 }
